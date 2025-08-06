@@ -1,13 +1,16 @@
-from snailio.event_loop import event_loop
+from .event_loop import event_loop
+import time
 
 class Task:
-    def __init__(self, generator, name=None):
+    def __init__(self, generator, name=None, timeout=None):
         self.iter = generator
-        self.finished = False
         self.name = name or f"{id(generator)}"
+        self.finished = False
+        self.cancelled = False
+        self.timeout = timeout
 
-    def done(self):
-        return self.finished
+        self.start_time = None
+
 
     def __await__(self):
         while not self.finished:
@@ -16,8 +19,16 @@ class Task:
     def __repr__(self):
         return f"Task name={self.name} , done={self.finished}"
 
-def create_task(generator, name=None):
-    task = Task(generator, name=name)
+    def done(self):
+        return self.finished
+    
+    def cancel(self):
+        self.cancelled = True
+
+        
+    
+
+def create_task(generator, name=None, timeout=None):
+    task = Task(generator, name=name, timeout=timeout)
     event_loop.put(task)
     return task
-
