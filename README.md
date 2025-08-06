@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🐌 snailio</h1>
+  <h1 align="center">🐌 SnailIO</h1>
   <h3 align="center"><code>Minimal asyncio-inspired event loop written from scratch</code></h3>
    
 ---
